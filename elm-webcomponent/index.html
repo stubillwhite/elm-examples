@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Elm web component example</title>
+
+        <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+        <link rel="import" href="bower_components/paper-dropdown/paper-dropdown.html">
+        <link rel="import" href="bower_components/paper-item/paper-item.html">
+    </head>
+    <body>
+        <div>
+            <paper-dropdown label="HTML dropdown" value="{{value}}">
+                <paper-item>Apple</paper-item>
+                <paper-item>Banana</paper-item>
+                <paper-item>Mango</paper-item>
+            </paper-dropdown>
+        </div>
+        <div id="elm-area"></div>
+        <script src="./elm.js"></script>
+        <script>
+          var app = Elm.Main.embed(document.getElementById("elm-area"));
+        </script>
+    </body>
+</html>
+
