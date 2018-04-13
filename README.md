@@ -1,6 +1,6 @@
 # elm-examples
 
-Various Elm code examples for an internal presentation.
+Various Elm code examples for an internal talk.
 
 ## Pre-requisites
 
