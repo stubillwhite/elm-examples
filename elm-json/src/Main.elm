@@ -1,10 +1,14 @@
 module Main exposing (..)
 
+import Browser
+import Browser.Navigation as Nav
 import Debug
-import Html exposing (Html, button, div, program, text)
+import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 import Http
 import Rest exposing (..)
+import Url
+
 
 
 -- Types
@@ -22,29 +26,33 @@ type Msg
 
 
 
+-- Init
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( { newsItems = Nothing }, Cmd.none )
+
+
+
 -- Update
-
-
-initialModel : Model
-initialModel =
-    { newsItems = Nothing }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ReadNewsItems ->
-            model ! [ getNewsItems handleGetNewsItemsResponse ]
+            ( model, Cmd.batch [ getNewsItems handleGetNewsItemsResponse ] )
 
         ReadNewsItemsSuccess newsItems ->
-            { model | newsItems = Just newsItems } ! []
+            ( { model | newsItems = Just newsItems }, Cmd.none )
 
         ReadNewsItemsFailure err ->
             let
                 _ =
-                    Debug.log "Error reading news items" (toString err)
+                    Debug.log "Error reading news items" (Debug.toString err)
             in
-            model ! []
+            ( model, Cmd.none )
 
 
 {-| The handler which is called when the server response is received
@@ -63,6 +71,18 @@ handleGetNewsItemsResponse response =
 -- View
 
 
+view : Model -> Browser.Document Msg
+view model =
+    { title = "elm-json"
+    , body =
+        [ div []
+            [ button [ onClick ReadNewsItems ] [ text "Read news items" ]
+            , displayNewsItems model
+            ]
+        ]
+    }
+
+
 displayNewsItems : Model -> Html Msg
 displayNewsItems model =
     case model.newsItems of
@@ -76,22 +96,14 @@ displayNewsItems model =
                 )
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ button [ onClick ReadNewsItems ] [ text "Read news items" ]
-        , displayNewsItems model
-        ]
-
-
 
 -- Main
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    program
-        { init = ( initialModel, Cmd.none )
+    Browser.document
+        { init = init
         , view = view
         , subscriptions = \x -> Sub.none
         , update = update

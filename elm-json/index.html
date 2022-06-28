@@ -8,9 +8,13 @@
         <title>Elm example</title>
     </head>
     <body>
-        <script src="./elm.js"></script>
+        <div id="elm-app-is-loaded-here"></div>
+
+        <script src="elm.js"></script>
         <script>
-          app = Elm.Main.fullscreen();
-        </script>
+            var app = Elm.Main.init({ 
+                            node: document.getElementById("elm-app-is-loaded-here")
+                        });      
+        </script> 
     </body>
 </html>

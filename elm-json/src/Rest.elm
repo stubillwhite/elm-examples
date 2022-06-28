@@ -1,9 +1,9 @@
 module Rest exposing (NewsItem, ResponseHandler, getNewsItems)
 
 import Http
-import HttpBuilder exposing (send, withExpect)
+import HttpBuilder exposing (..)
 import Json.Decode as Decode exposing (Decoder)
-import Json.Decode.Pipeline exposing (decode, hardcoded, optional, required)
+import Json.Decode.Pipeline exposing (hardcoded, optional, required)
 import Json.Encode as Encode
 
 
@@ -32,11 +32,16 @@ type alias NewsItem =
 -}
 decodeNewsItem : Decoder NewsItem
 decodeNewsItem =
-    decode NewsItem
+    Decode.succeed NewsItem
         |> required "userId" Decode.int
         |> required "id" Decode.int
         |> required "title" Decode.string
         |> required "body" Decode.string
+
+
+decodeNewsItems : Decode.Decoder (List NewsItem)
+decodeNewsItems =
+    Decode.list decodeNewsItem
 
 
 {-| A GET operation to retrieve the news items
@@ -48,5 +53,5 @@ getNewsItems handler =
             serverEndpoint "/news-items"
     in
     HttpBuilder.get url
-        |> withExpect (Http.expectJson (Decode.list decodeNewsItem))
-        |> send handler
+        |> withExpect (Http.expectJson handler decodeNewsItems)
+        |> request

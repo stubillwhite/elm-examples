@@ -1,8 +1,10 @@
 module Main exposing (..)
 
+import Browser exposing (sandbox)
 import Debug exposing (..)
-import Html exposing (Html, beginnerProgram, button, div, text)
+import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+
 
 
 -- Types
@@ -78,10 +80,10 @@ view model =
 
 {-| This is the entry point which binds the functions to the Elm runtime
 -}
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    beginnerProgram
-        { model = initialModel
+    Browser.sandbox
+        { init = initialModel
         , view = view
         , update = update
         }

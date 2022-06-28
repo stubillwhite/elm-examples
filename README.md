@@ -10,7 +10,7 @@ Various Elm code examples for an internal talk.
   - `brew install elm`
   
 - elm-live (<https://github.com/architectcodes/elm-live>)
-  - `npm install --global elm elm-live`
+  - `npm install --global elm-live`
 
 - elm-format (<https://github.com/avh4/elm-format>)
 
